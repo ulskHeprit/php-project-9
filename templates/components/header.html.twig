@@ -15,3 +15,10 @@
         </div>
     </nav>
 </header>
+{% for type, messages in flash %}
+    {% for message in messages %}
+        <div class="alert alert-{{ type }}" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endfor %}

@@ -6,4 +6,4 @@ install:
 	composer install
 
 lint:
-	composer exec phpcs src
+	composer exec phpcs -- --standard=PSR2 src/ public/

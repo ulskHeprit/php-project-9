@@ -9,7 +9,7 @@
 </head>
 <body class="min-vh-100 d-flex flex-column vsc-initialized">
     {% include 'components/header.html.twig' %}
-    {% include 'components/main.html.twig' %}
+    {{ content|raw }}
     {% include 'components/footer.html.twig' %}
 </body>
 </html>
