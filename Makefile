@@ -6,4 +6,4 @@ install:
 	composer install
 
 lint:
-	./vendor/bin/phpcs src
+	composer exec phpcs src
