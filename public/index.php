@@ -188,6 +188,7 @@ $app->post(
 
         if ($urlCheckRepository->save($urlCheck)) {
             $url = $routeParser->urlFor('urlsShow', ['id' => $url->getId()]);
+            $this->get('flash')->addMessage('success', 'Страница успешно проверена');
             return $response->withRedirect($url);
         } else {
             return $response->withStatus(404);

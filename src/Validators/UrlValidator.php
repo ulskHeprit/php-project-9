@@ -28,6 +28,10 @@ class UrlValidator
             $errors['name'] = 'Длинный url (>255)';
         }
 
+        if (!filter_var($url->getName(), FILTER_VALIDATE_URL)) {
+            $errors['name'] = 'Некорректный url';
+        }
+
         if (!static::validateDateTime($url->getCreatedAt())) {
             $errors['created_at'] = 'Непраавильный формат создания (yyyy-mm-dd hh:mm:ss)';
         }
