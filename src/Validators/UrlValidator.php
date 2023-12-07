@@ -29,7 +29,7 @@ class UrlValidator
         }
 
         try {
-            if (get_headers($url->getName()) === false) {
+            if (@get_headers($url->getName()) === false) {
                 $errors['name'] = 'Некорректный url';
             }
         } catch (\Exception $e) {
