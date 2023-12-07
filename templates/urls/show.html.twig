@@ -24,7 +24,7 @@
             <input type="submit" class="btn btn-primary" value="Запустить проверку">
         </form>
         <table class="table table-bordered table-hover" data-test="checks">
-            <thead>
+            <tbody>
                 <tr>
                     <th>ID</th>
                     <th>Код ответа</th>
@@ -33,8 +33,6 @@
                     <th>description</th>
                     <th>Дата создания</th>
                 </tr>
-            </thead>
-            <tbody>
                 {% for check in url_checks %}
                     <tr>
                         <td>{{ check.getId() }}</td>
