@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use DiDom\Document;
 use DI\Container;
 use GuzzleHttp\Client;
 use Hexlet\Code\Db\Db;
@@ -169,11 +170,19 @@ $app->post(
             'timeout'  => 3,
         ]);
         $urlResponse = $client->request('GET');
+        $html = $urlResponse->getBody()->getContents();
+        $document = new Document($html);
+        $h1 = $document->first('h1')->innerHtml();
+        $title = $document->first('title')->innerHtml();
+        $description = $document->first("meta[name=description]")->attr('content');
 
         $urlCheckRepository = $this->get('urlCheckRepository');
         $urlCheck = new UrlCheck([
             'url_id'      => $url->getId(),
             'status_code' => $urlResponse->getStatusCode(),
+            'h1'          => $h1,
+            'title'       => $title,
+            'description' => $description,
             'created_at'  => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
 
