@@ -19,12 +19,7 @@ use Twig\Loader\FilesystemLoader;
 
 require_once '../vendor/autoload.php';
 
-if ($_REQUEST['f']) {
-    echo phpinfo();
-    die();
-}
-
-$requiredEnvVariables = [
+/*$requiredEnvVariables = [
     'DB_HOST',
     'DB_PORT',
     'DB_DATABASE',
@@ -33,7 +28,13 @@ $requiredEnvVariables = [
 ];
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->load();
-$dotenv->required($requiredEnvVariables);
+$dotenv->required($requiredEnvVariables);*/
+$databaseUrl = parse_url($_ENV['DATABASE_URL']);
+$_ENV['DB_USER'] = $databaseUrl['user']; // janedoe
+$_ENV['DB_PASSWORD'] = $databaseUrl['pass']; // mypassword
+$_ENV['DB_HOST'] = $databaseUrl['host']; // localhost
+$_ENV['DB_PORT'] = $databaseUrl['port']; // 5432
+$_ENV['DB_DATABASE'] = ltrim($databaseUrl['path'], '/'); // mydb
 
 $container = new Container();
 
