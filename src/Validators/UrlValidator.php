@@ -28,7 +28,9 @@ class UrlValidator
             $errors['name'] = 'Длинный url (>255)';
         }
 
-        if (get_headers($url->getName()) === false) {
+        $pattern = "/^(http|https):\/\/([a-zA-Z0-9_-]+\.)*[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*$/";
+
+        if (!preg_match($pattern, $url->getName())) {
             $errors['name'] = 'Некорректный url';
         }
 
