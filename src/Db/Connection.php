@@ -7,11 +7,11 @@ class Connection
     private static ?Connection $conn = null;
 
     /**
-     * @param $params
+     * @param array $params
      * @return \PDO
      * @throws \Exception
      */
-    public function connect($params = [])
+    public function connect(array $params = [])
     {
         if (empty($params)) {
             throw new \Exception("Error reading database configuration file");
