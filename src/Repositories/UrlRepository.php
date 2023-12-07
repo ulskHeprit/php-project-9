@@ -83,15 +83,26 @@ class UrlRepository
         return false;
     }
 
+    /**
+     * @return array
+     */
     public function getAll()
     {
         $urls = [];
-        $arrays = $this->db->fetchAll('SELECT * FROM urls ORDER BY created_at DESC');
+        $arrays = $this->getAllArray();
 
         foreach ($arrays as $row) {
             $urls[] = new Url($row);
         }
 
         return $urls;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllArray()
+    {
+        return $this->db->fetchAll('SELECT * FROM urls ORDER BY created_at DESC');
     }
 }

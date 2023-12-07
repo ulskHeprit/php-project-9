@@ -4,6 +4,8 @@ use Carbon\Carbon;
 use DI\Container;
 use Hexlet\Code\Db\Db;
 use Hexlet\Code\Models\Url;
+use Hexlet\Code\Models\UrlCheck;
+use Hexlet\Code\Repositories\UrlCheckRepository;
 use Hexlet\Code\Repositories\UrlRepository;
 use Hexlet\Code\Validators\UrlValidator;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -50,6 +52,7 @@ $menu = [
 $db = Db::get($_ENV);
 
 $urlRepository = new UrlRepository($db);
+$urlCheckRepository = new UrlCheckRepository($db);
 
 $container->set('renderer', $twig);
 $container->set('db', $db);
@@ -59,6 +62,7 @@ $container->set('flash', function () {
     return new Messages($storage);
 });
 $container->set('urlRepository', $urlRepository);
+$container->set('urlCheckRepository', $urlCheckRepository);
 
 $app = AppFactory::createFromContainer($container);
 $app->add(
@@ -92,7 +96,11 @@ $app->get('/urls', function (Request $request, Response $response) {
         'this' => $this,
         'flash' => $this->get('flash')->getMessages(),
     ];
-    $data['urls'] = $this->get('urlRepository')->getAll();
+    $data['urls'] = $this->get('urlRepository')->getAllArray();
+
+    foreach ($data['urls'] as &$url) {
+        $url['lastCheck'] = $this->get('urlCheckRepository')->getLastByUrlId($url['id']);
+    }
 
     $data['content'] = $this->get('renderer')->render('urls/index.html.twig', $data);
     return $response->write($this->get('renderer')->render('index.html.twig', $data));
@@ -109,6 +117,8 @@ $app->get('/urls/{id:[0-9]+}', function (Request $request, Response $response, a
     if (!$data['url']) {
         return $response->withStatus(404);
     }
+
+    $data['url_checks'] = $this->get('urlCheckRepository')->getByUrlId($data['url']->getId());
 
     $data['content'] = $this->get('renderer')->render('urls/show.html.twig', $data);
     return $response->write($this->get('renderer')->render('index.html.twig', $data));
@@ -143,5 +153,29 @@ $app->post('/urls', function (Request $request, Response $response) use ($routeP
     $url = $routeParser->urlFor('mainIndex');
     return $response->withRedirect($url);
 });
+
+$app->post(
+    '/urls/{url_id:[0-9]+}/checks',
+    function (Request $request, Response $response, array $args) use ($routeParser) {
+        $url = $this->get('urlRepository')->getById($args['url_id']);
+
+        if (!$url) {
+            return $response->withStatus(404);
+        }
+
+        $urlCheckRepository = $this->get('urlCheckRepository');
+        $urlCheck = new UrlCheck([
+            'url_id'     => $url->getId(),
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+
+        if ($urlCheckRepository->save($urlCheck)) {
+            $url = $routeParser->urlFor('urlsShow', ['id' => $url->getId()]);
+            return $response->withRedirect($url);
+        } else {
+            return $response->withStatus(404);
+        }
+    }
+)->setName('urlsShow');
 
 $app->run();

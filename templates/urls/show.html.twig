@@ -24,16 +24,27 @@
             <input type="submit" class="btn btn-primary" value="Запустить проверку">
         </form>
         <table class="table table-bordered table-hover" data-test="checks">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Код ответа</th>
+                    <th>h1</th>
+                    <th>title</th>
+                    <th>description</th>
+                    <th>Дата создания</th>
+                </tr>
+            </thead>
             <tbody>
-            <tr>
-                <th>ID</th>
-                <th>Код ответа</th>
-                <th>h1</th>
-                <th>title</th>
-                <th>description</th>
-                <th>Дата создания</th>
-            </tr>
-            <!--?php foreach ($checks as $check): ?-->
+                {% for check in url_checks %}
+                    <tr>
+                        <td>{{ check.getId() }}</td>
+                        <td>{{ check.getStatusCode() }}</td>
+                        <td class="text-break">{{ check.getH1() }}</td>
+                        <td class="text-break">{{ check.getTitle() }}</td>
+                        <td class="text-break">{{ check.getDescription() }}</td>
+                        <td>{{ check.getCreatedAt() }}</td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

@@ -16,8 +16,8 @@
                     <tr>
                         <td>{{ url.id }}</td>
                         <td><a href="/urls/{{ url.id }}">{{ url.name }}</a></td>
-                        <td>{{ url.created_at }}</td>
-                        <td>200</td>
+                        <td>{{ url.lastCheck.getCreatedAt() }}</td>
+                        <td>{{ url.lastCheck.getStatusCode() }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
