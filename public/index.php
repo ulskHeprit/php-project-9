@@ -161,7 +161,7 @@ $app->post('/urls', function (Request $request, Response $response) use ($routeP
     ];
 
     $data['content'] = $this->get('renderer')->render('main/index.html.twig', $data);
-    return $response->write($this->get('renderer')->render('index.html.twig', $data));
+    return $response->withStatus(422)->write($this->get('renderer')->render('index.html.twig', $data));
 });
 
 $app->post(
