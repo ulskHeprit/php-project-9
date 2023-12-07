@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use DI\ContainerBuilder;
 use DiDom\Document;
 use DI\Container;
 use GuzzleHttp\Client;
@@ -146,12 +147,21 @@ $app->post('/urls', function (Request $request, Response $response) use ($routeP
         return $response->withRedirect($url);
     }
 
+    //Dirt fix
+    $errors = [];
     foreach ($validateErrors as $error) {
         $this->get('flash')->addMessage('danger', $error);
+        $errors['danger'][] = $error;
     }
 
-    $url = $routeParser->urlFor('mainIndex');
-    return $response->withRedirect($url);
+    $data = [
+        'selected_menu' => 'main',
+        'this' => $this,
+        'flash' => $errors,
+    ];
+
+    $data['content'] = $this->get('renderer')->render('main/index.html.twig', $data);
+    return $response->write($this->get('renderer')->render('index.html.twig', $data));
 });
 
 $app->post(
