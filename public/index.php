@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use DI\Container;
+use GuzzleHttp\Client;
 use Hexlet\Code\Db\Db;
 use Hexlet\Code\Models\Url;
 use Hexlet\Code\Models\UrlCheck;
@@ -163,10 +164,17 @@ $app->post(
             return $response->withStatus(404);
         }
 
+        $client = new Client([
+            'base_uri' => $url->getName(),
+            'timeout'  => 3,
+        ]);
+        $urlResponse = $client->request('GET');
+
         $urlCheckRepository = $this->get('urlCheckRepository');
         $urlCheck = new UrlCheck([
-            'url_id'     => $url->getId(),
-            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'url_id'      => $url->getId(),
+            'status_code' => $urlResponse->getStatusCode(),
+            'created_at'  => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
 
         if ($urlCheckRepository->save($urlCheck)) {

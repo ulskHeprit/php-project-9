@@ -19,15 +19,15 @@ class Url
      */
     public function __construct($data)
     {
-        $this->id = $data['id'] ?? null;
+        $this->id = $data['id'];
         $this->name = $data['name'];
         $this->created_at = $data['created_at'];
     }
 
     /**
-     * @return int
+     * @return int|mixed|null
      */
-    public function getId(): int
+    public function getId()
     {
         return $this->id;
     }
