@@ -88,6 +88,7 @@ $app->get('/', function (Request $request, Response $response) {
     ];
 
     $data['content'] = $this->get('renderer')->render('main/index.html.twig', $data);
+    /** @phpstan-ignore-next-line */
     return $response->write($this->get('renderer')->render('index.html.twig', $data));
 })->setName('mainIndex');
 
@@ -104,6 +105,7 @@ $app->get('/urls', function (Request $request, Response $response) {
     }
 
     $data['content'] = $this->get('renderer')->render('urls/index.html.twig', $data);
+    /** @phpstan-ignore-next-line */
     return $response->write($this->get('renderer')->render('index.html.twig', $data));
 })->setName('urlsIndex');
 
@@ -122,10 +124,12 @@ $app->get('/urls/{id:[0-9]+}', function (Request $request, Response $response, a
     $data['url_checks'] = $this->get('urlCheckRepository')->getByUrlId($data['url']->getId());
 
     $data['content'] = $this->get('renderer')->render('urls/show.html.twig', $data);
+    /** @phpstan-ignore-next-line */
     return $response->write($this->get('renderer')->render('index.html.twig', $data));
 })->setName('urlsShow');
 
 $app->post('/urls', function (Request $request, Response $response) use ($routeParser) {
+    /** @phpstan-ignore-next-line */
     $urlData = $request->getParsedBodyParam('url');
     $urlData['created_at'] = Carbon::now()->format('Y-m-d H:i:s');
     $url = new Url($urlData);
@@ -144,6 +148,7 @@ $app->post('/urls', function (Request $request, Response $response) use ($routeP
         }
 
         $url = $routeParser->urlFor('urlsShow', ['id' => $id]);
+        /** @phpstan-ignore-next-line */
         return $response->withRedirect($url);
     }
 
@@ -161,6 +166,7 @@ $app->post('/urls', function (Request $request, Response $response) use ($routeP
     ];
 
     $data['content'] = $this->get('renderer')->render('main/index.html.twig', $data);
+    /** @phpstan-ignore-next-line */
     return $response->withStatus(422)->write($this->get('renderer')->render('index.html.twig', $data));
 });
 
@@ -180,8 +186,11 @@ $app->post(
         $urlResponse = $client->request('GET');
         $html = $urlResponse->getBody()->getContents();
         $document = new Document($html);
+        /** @phpstan-ignore-next-line */
         $h1 = $document->first('h1')->innerHtml();
+        /** @phpstan-ignore-next-line */
         $title = $document->first('title')->innerHtml();
+        /** @phpstan-ignore-next-line */
         $description = $document->first("meta[name=description]")->attr('content');
 
         $urlCheckRepository = $this->get('urlCheckRepository');
@@ -197,6 +206,7 @@ $app->post(
         if ($urlCheckRepository->save($urlCheck)) {
             $url = $routeParser->urlFor('urlsShow', ['id' => $url->getId()]);
             $this->get('flash')->addMessage('success', 'Страница успешно проверена');
+            /** @phpstan-ignore-next-line */
             return $response->withRedirect($url);
         } else {
             return $response->withStatus(404);

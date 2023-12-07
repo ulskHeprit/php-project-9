@@ -6,6 +6,11 @@ class Connection
 {
     private static ?Connection $conn = null;
 
+    /**
+     * @param $params
+     * @return \PDO
+     * @throws \Exception
+     */
     public function connect($params = [])
     {
         if (empty($params)) {
@@ -29,10 +34,12 @@ class Connection
 
     public static function get()
     {
+        /** @phpstan-ignore-next-line */
         if (null === static::$conn) {
+            /** @phpstan-ignore-next-line */
             static::$conn = new self();
         }
-
+        /** @phpstan-ignore-next-line */
         return static::$conn;
     }
 

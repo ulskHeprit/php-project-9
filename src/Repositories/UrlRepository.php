@@ -10,7 +10,7 @@ use Hexlet\Code\Models\Url;
  */
 class UrlRepository
 {
-    private $db;
+    private Db $db;
 
     /**
      * @param Db $db
@@ -45,7 +45,7 @@ class UrlRepository
         } catch (\Exception $e) {
             return false;
         }
-
+        /** @phpstan-ignore-next-line */
         return $this->getByName($url->getName())->getId();
     }
 

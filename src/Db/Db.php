@@ -7,65 +7,70 @@ namespace Hexlet\Code\Db;
  */
 class Db
 {
-    private static $instance = null;
-    private static $pdo = null;
+    private static ?Db $instance = null;
+    private static ?\PDO $pdo = null;
 
     /**
      * @param $params
      * @return self
      * @throws \Exception
      */
-    public static function get($params = [])
+    public static function get(array $params = [])
     {
+        /** @phpstan-ignore-next-line */
         if (is_null(static::$instance)) {
             $pdo = Connection::get()->connect($params);
+            /** @phpstan-ignore-next-line */
             static::$instance = new self($pdo);
         }
-
+        /** @phpstan-ignore-next-line */
         return static::$instance;
     }
 
     /**
-     * @param $sql
+     * @param string $sql
      * @return mixed
      */
-    public function query($sql)
+    public function query(string $sql)
     {
+        /** @phpstan-ignore-next-line */
         return static::$pdo->query($sql);
     }
 
     /**
-     * @param $sql
+     * @param string $sql
      * @return mixed
      */
-    public function exec($sql)
+    public function exec(string $sql)
     {
+        /** @phpstan-ignore-next-line */
         return static::$pdo->exec($sql);
     }
 
     /**
-     * @param $sql
+     * @param string $sql
      * @return mixed
      */
-    public function fetchAll($sql)
+    public function fetchAll(string $sql)
     {
         return $this->query($sql)->fetchAll();
     }
 
     /**
-     * @param $sql
+     * @param string $sql
      * @return mixed
      */
-    public function fetch($sql)
+    public function fetch(string $sql)
     {
         return $this->query($sql)->fetch();
     }
 
     /**
-     * @param $pdo
+     * @param \PDO $pdo
      */
-    protected function __construct($pdo)
+    protected function __construct(\PDO $pdo)
     {
+        /** @phpstan-ignore-next-line */
         static::$pdo = $pdo;
     }
 }

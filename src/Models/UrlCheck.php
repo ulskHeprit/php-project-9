@@ -16,9 +16,9 @@ class UrlCheck
     protected string $created_at;
 
     /**
-     * @param $data
+     * @param array $data
      */
-    public function __construct($data)
+    public function __construct(array $data)
     {
         $this->id = $data['id'] ?? null;
         $this->url_id = $data['url_id'];

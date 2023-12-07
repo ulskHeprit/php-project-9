@@ -12,9 +12,9 @@ class Url
     protected string $created_at;
 
     /**
-     * @param $data
+     * @param array $data
      */
-    public function __construct($data)
+    public function __construct(array $data)
     {
         $this->id = $data['id'] ?? null;
         $this->name = $data['name'];

@@ -11,7 +11,7 @@ use Hexlet\Code\Models\UrlCheck;
  */
 class UrlCheckRepository
 {
-    private $db;
+    private Db $db;
 
     /**
      * @param Db $db
@@ -22,8 +22,8 @@ class UrlCheckRepository
     }
 
     /**
-     * @param Url $url
-     * @return false|int|mixed|null
+     * @param UrlCheck $urlCheck
+     * @return bool
      */
     public function save(UrlCheck $urlCheck)
     {

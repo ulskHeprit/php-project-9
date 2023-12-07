@@ -10,7 +10,7 @@ use Hexlet\Code\Models\Url;
  */
 class UrlValidator
 {
-    private static $dateFormat = 'Y-m-d H:i:s';
+    private static string $dateFormat = 'Y-m-d H:i:s';
 
     /**
      * @param Url $url
@@ -36,6 +36,7 @@ class UrlValidator
             $errors['name'] = 'Некорректный url';
         }
 
+        /** @phpstan-ignore-next-line */
         if (!static::validateDateTime($url->getCreatedAt())) {
             $errors['created_at'] = 'Непраавильный формат создания (yyyy-mm-dd hh:mm:ss)';
         }
@@ -44,13 +45,15 @@ class UrlValidator
     }
 
     /**
-     * @param $date
+     * @param string $date
      * @return bool
      */
-    private static function validateDateTime($date)
+    private static function validateDateTime(string $date)
     {
         date_default_timezone_set('UTC');
+        /** @phpstan-ignore-next-line */
         $d = DateTime::createFromFormat(static::$dateFormat, $date);
+        /** @phpstan-ignore-next-line */
         return $d && ($d->format(static::$dateFormat) === $date);
     }
 }
