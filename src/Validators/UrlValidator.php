@@ -28,7 +28,7 @@ class UrlValidator
             $errors['name'] = 'Длинный url (>255)';
         }
 
-        if (!filter_var($url->getName(), FILTER_VALIDATE_URL)) {
+        if (get_headers($url->getName()) === false) {
             $errors['name'] = 'Некорректный url';
         }
 
