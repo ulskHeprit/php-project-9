@@ -19,7 +19,7 @@ class Url
      */
     public function __construct($data)
     {
-        $this->id = $data['id'];
+        $this->id = $data['id'] ?? null;
         $this->name = $data['name'];
         $this->created_at = $data['created_at'];
     }

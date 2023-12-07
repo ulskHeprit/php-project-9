@@ -23,12 +23,12 @@ class UrlCheck
      */
     public function __construct($data)
     {
-        $this->id = $data['id'];
+        $this->id = $data['id'] ?? null;
         $this->url_id = $data['url_id'];
-        $this->status_code = $data['status_code'];
-        $this->h1 = $data['h1'];
-        $this->title = $data['title'];
-        $this->description = $data['description'];
+        $this->status_code = $data['status_code'] ?? null;
+        $this->h1 = $data['h1'] ?? null;
+        $this->title = $data['title'] ?? null;
+        $this->description = $data['description'] ?? null;
         $this->created_at = $data['created_at'];
     }
 
