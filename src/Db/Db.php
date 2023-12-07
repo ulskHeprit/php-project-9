@@ -15,7 +15,7 @@ class Db
 
     /**
      * @param $params
-     * @return null
+     * @return self
      * @throws \Exception
      */
     public static function get($params = [])

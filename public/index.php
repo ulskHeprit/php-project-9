@@ -19,22 +19,19 @@ use Twig\Loader\FilesystemLoader;
 
 require_once '../vendor/autoload.php';
 
-/*$requiredEnvVariables = [
-    'DB_HOST',
-    'DB_PORT',
-    'DB_DATABASE',
-    'DB_USER',
-    'DB_PASSWORD',
+$requiredEnvVariables = [
+    'DATABASE_URL',
 ];
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->load();
-$dotenv->required($requiredEnvVariables);*/
+$dotenv->required($requiredEnvVariables);
+
 $databaseUrl = parse_url($_ENV['DATABASE_URL']);
-$_ENV['DB_USER'] = $databaseUrl['user']; // janedoe
-$_ENV['DB_PASSWORD'] = $databaseUrl['pass']; // mypassword
-$_ENV['DB_HOST'] = $databaseUrl['host']; // localhost
-$_ENV['DB_PORT'] = $databaseUrl['port']; // 5432
-$_ENV['DB_DATABASE'] = ltrim($databaseUrl['path'], '/'); // mydb
+$dbParams['DB_USER'] = $databaseUrl['user'];
+$dbParams['DB_PASSWORD'] = $databaseUrl['pass'];
+$dbParams['DB_HOST'] = $databaseUrl['host'];
+$dbParams['DB_PORT'] = $databaseUrl['port'];
+$dbParams['DB_DATABASE'] = ltrim($databaseUrl['path'], '/');
 
 $container = new Container();
 
@@ -52,7 +49,7 @@ $menu = [
     ]
 ];
 
-$db = Db::get($_ENV);
+$db = Db::get($dbParams);
 
 $urlRepository = new UrlRepository($db);
 $urlCheckRepository = new UrlCheckRepository($db);

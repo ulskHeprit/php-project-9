@@ -18,9 +18,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Copy .env file
-        run: cp .env.example .env
-
       - name: Hexlet project check
         uses: hexlet/project-action@release
         with:
